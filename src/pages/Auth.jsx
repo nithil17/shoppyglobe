@@ -1,32 +1,51 @@
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 export default function Auth(){
     const [mode, setMode] = useState("signup")
+    const {register, handleSubmit, 
+    formState:{errors}} = useForm();
+
+    function onSubmit(){
+
+    }
+    
     return(
         <div className="page">
             <div className="container">
                 <div className="auth-container">
                     <h1 className="page-title">{mode==="signup" ? "Sign Up":"Login"}</h1>
-                    <form className="auth-form">
+                    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="form-group">
                             <label className="form-lable">Email</label>
-                            <input className="form-input" type="email" id="email"/>
+                            <input className="form-input" type="email" id="email"
+                            {...register("email", {required:"Email is required"})}/>
                         </div>
                          <div className="form-group">
                             <label className="form-lable">Password</label>
-                            <input className="form-input" type="passwords" id="password"/>
+                            <input className="form-input" type="passwords" id="password"
+                            {...register("password", {required:"password is required",
+                                minLength:{
+                                    value: 6,
+                                    message:"Password must be at least 6 characters"
+                                },
+                                 maxLength:{
+                                    value: 12,
+                                    message:"Password must be less than 12 characters"
+                                },
+                            })}/>
                         </div>           
                         <button type="submit" className="btn btn-primary btn-large">{mode==="signup" ? "Sign Up":"Login"}</button>             
                     </form>
                     <div className="auth-switch">
                         {mode==="signup"? (
                                 <p>
-                                    {" "}Already have account?{" "}
+                                    {" "}Already have an account?{" "}
                                     <span className="auth-link" onClick={()=> setMode("login")}>Login</span>
                                 </p>
                                 
                         ) : (<p>
-                                    {" "}Dont have account?{" "}
+                                    {" "}Dont have an account?{" "}
                                     <span className="auth-link" onClick={()=> setMode("signup")}>Sign Up</span>
                                 </p>
                             )}
