@@ -7,9 +7,9 @@ export default function Auth(){
     formState:{errors}} = useForm();
 
     function onSubmit(){
-
+        alert("signed up")
     }
-    
+
     return(
         <div className="page">
             <div className="container">
@@ -20,6 +20,8 @@ export default function Auth(){
                             <label className="form-lable">Email</label>
                             <input className="form-input" type="email" id="email"
                             {...register("email", {required:"Email is required"})}/>
+                            {errors.email && <span className="form-error">{errors.email.message}</span>}
+
                         </div>
                          <div className="form-group">
                             <label className="form-lable">Password</label>
@@ -34,6 +36,7 @@ export default function Auth(){
                                     message:"Password must be less than 12 characters"
                                 },
                             })}/>
+                            {errors.password && <span className="form-error">{errors.password.message}</span>}
                         </div>           
                         <button type="submit" className="btn btn-primary btn-large">{mode==="signup" ? "Sign Up":"Login"}</button>             
                     </form>
