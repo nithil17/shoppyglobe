@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 export default function Auth(){
     const [mode, setMode] = useState("signup")
     return(
@@ -20,12 +22,12 @@ export default function Auth(){
                         {mode==="signup"? (
                                 <p>
                                     {" "}Already have account?{" "}
-                                    <span className="auth-link">Login</span>
+                                    <span className="auth-link" onClick={()=> setMode("login")}>Login</span>
                                 </p>
                                 
                         ) : (<p>
                                     {" "}Dont have account?{" "}
-                                    <span className="auth-link">Sign Up</span>
+                                    <span className="auth-link" onClick={()=> setMode("signup")}>Sign Up</span>
                                 </p>
                             )}
                     </div>
