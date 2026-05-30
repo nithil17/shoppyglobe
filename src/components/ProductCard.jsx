@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+product
 export default function ProductCard({product}){
 
     return(
