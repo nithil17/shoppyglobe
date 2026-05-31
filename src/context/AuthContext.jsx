@@ -28,9 +28,17 @@ export default function AuthProvider({ children }){
             (savedUser) => savedUser.email === email && savedUser.password === password
         );
 
+    function logout(){
+        localStorage.removeItem("currentUserEmail");
+        setUser(null);
+
+    }
+
         setUser(foundUser || null);
         return foundUser;
     }
 
-    return <AuthContext.Provider value={{user, signUp, login}}> {children}</AuthContext.Provider>
+    return <AuthContext.Provider value={{user, signUp, login, logout}}> 
+    {children}
+    </AuthContext.Provider>
 }

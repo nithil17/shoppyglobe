@@ -6,12 +6,12 @@ import { AuthContext } from "../context/auth-context";
 export default function Auth(){
     const [mode, setMode] = useState("signup")
 
-    const {signUp, user} = useContext(AuthContext);
+    const {signUp, user, logout} = useContext(AuthContext);
     const {register, handleSubmit, 
     formState:{errors}} = useForm();
 
     function onSubmit(data){
-        alert("signed up")
+      
         signUp(data.email, data.password)
     }
 
@@ -20,7 +20,7 @@ export default function Auth(){
             <div className="container">
                 <div className="auth-container">
                     {user && <p>User Logged in: {user.email}</p>}
-
+                    <button onClick={()=>logout()}>Logout</button>
                     <h1 className="page-title">{mode==="signup" ? "Sign Up":"Login"}</h1>
                     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="form-group">
