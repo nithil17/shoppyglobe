@@ -4,6 +4,7 @@ function useProducts(){
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    
 
     useEffect(()=>{
         async function fetchProducts() {
