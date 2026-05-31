@@ -1,7 +1,7 @@
 import {  useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/auth-context";
 
 
 export default function Auth(){
@@ -9,10 +9,7 @@ export default function Auth(){
     const [error, setError] = useState(null);
     const navigate = useNavigate()
 
-    const {signUp, user, logout, login} = useAuth();
-    function getUser(){
-
-    }
+    const {signUp, login} = useAuth();
     const {register, handleSubmit, 
     formState:{errors}} = useForm();
 
@@ -26,7 +23,7 @@ export default function Auth(){
            result = login(data.email, data.password);
         }      
 
-        if(result.sussess){
+        if(result.success){
             navigate("/");
         }else{
             setError(result.error)
