@@ -2,7 +2,10 @@ import { useState } from "react";
 import { AuthContext } from "./auth-context";
 
 export default function AuthProvider({ children }){
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(localStorage.getItem("currentUserEmail") ? 
+    {email:localStorage.getItem("currentUserEmail")}
+     : null
+    );
 
     function signUp(email, password){
         const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -14,6 +17,7 @@ export default function AuthProvider({ children }){
         const newUser = {email, password};
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("currentUserEmail", email)
         setUser({email});
         return {success: true};
     }
