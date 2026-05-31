@@ -1,13 +1,18 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
+import { AuthContext } from "../context/AuthContext";
+
 
 export default function Auth(){
     const [mode, setMode] = useState("signup")
+
+    const {signUp} = useContext(AuthContext);
     const {register, handleSubmit, 
     formState:{errors}} = useForm();
 
-    function onSubmit(){
+    function onSubmit(data){
         alert("signed up")
+        signUp(data.email, data.password)
     }
 
     return(
