@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/auth-context";
 
 
 export default function Auth(){
@@ -30,7 +30,7 @@ export default function Auth(){
                         </div>
                          <div className="form-group">
                             <label className="form-lable">Password</label>
-                            <input className="form-input" type="passwords" id="password"
+                            <input className="form-input" type="password" id="password"
                             {...register("password", {required:"password is required",
                                 minLength:{
                                     value: 6,
