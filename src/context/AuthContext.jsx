@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./auth-context";
 
 export default function AuthProvider({ children }){
@@ -27,8 +27,8 @@ export default function AuthProvider({ children }){
         const foundUser = users.find(
             (savedUser) => savedUser.email === email && savedUser.password === password
         );
-        if(!foundUser){
-            return{ success: false , error:"Invalid email or password"}
+        if(!user){
+            return{ success: false , error:"Invalid Email or Passowrd"}
         }
         localStorage.setItem("currentUserEmail", email);
         setUser({email});
@@ -43,4 +43,9 @@ export default function AuthProvider({ children }){
     return <AuthContext.Provider value={{user, signUp, login, logout}}> 
     {children}
     </AuthContext.Provider>
+}
+
+
+export function useAuth(){
+    const content = useContext(AuthContext);
 }
