@@ -22,20 +22,22 @@ export default function AuthProvider({ children }){
         return {success: true};
     }
 
-     function login(email, password){
+    function login(email, password){
         const users = JSON.parse(localStorage.getItem("users")) || [];
         const foundUser = users.find(
             (savedUser) => savedUser.email === email && savedUser.password === password
         );
+        if(!user){
+            return{ success: false , error:"Invalid Email or Passowrd"}
+        }
+        localStorage.setItem("currentUserEmail", email);
+        setUser({email});
+        return {success:true};
+    }
 
     function logout(){
         localStorage.removeItem("currentUserEmail");
         setUser(null);
-
-    }
-
-        setUser(foundUser || null);
-        return foundUser;
     }
 
     return <AuthContext.Provider value={{user, signUp, login, logout}}> 
