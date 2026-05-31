@@ -10,7 +10,7 @@ function Navbar(){
                     <Link to="/" className="navbar-brand">ShoppyGlobe</Link>    
                 <div className="navbar-links">
                     <Link to="/" className="navbar-link">Home</Link>
-                    <Link to="/checkout" className="navbar-link">Cart</Link>
+                    <Link to="/checkout" className="navbar-link">Cart</Link> {}
                 </div>
                 <div className="navbar-auth">
                     {!user ? <div className="navbar-auth-links"> 
