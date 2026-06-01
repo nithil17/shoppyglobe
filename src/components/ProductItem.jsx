@@ -1,12 +1,22 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCartItems } from "../store/cartSlice";
 
 export default function ProductItem({ product }) {
+  const [added, setAdded] = useState(false);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const productInCart = cartItems.find((item) => item.id === product.id);
-  const productQuantityLabel = productInCart ? `(${productInCart.quantity})` : "";
+  const cartQuantity = productInCart?.quantity || 0;
+  const stockLimit = product.stock || 99;
+  const isAtStockLimit = cartQuantity >= stockLimit;
+
+  function handleAddToCart() {
+    dispatch(addToCart(product));
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1200);
+  }
 
   return (
     <div className="product-card">
@@ -19,15 +29,19 @@ export default function ProductItem({ product }) {
       <div className="product-card-content">
         <h3 className="product-card-name">{product.title}</h3>
         <p className="product-card-price">${product.price}</p>
+        <p className="stock-text">
+          {isAtStockLimit ? "Stock limit reached" : `${stockLimit - cartQuantity} left`}
+        </p>
         <div className="product-card-actions">
           <Link to={`/products/${product.id}`} className="btn btn-secondary">
             View Details
           </Link>
           <button
             className="btn btn-primary"
-            onClick={() => dispatch(addToCart(product))}
+            disabled={isAtStockLimit}
+            onClick={handleAddToCart}
           >
-            Add to Cart {productQuantityLabel}
+            {isAtStockLimit ? "In Cart" : added ? "Added" : "Add to Cart"}
           </button>
         </div>
       </div>

@@ -9,4 +9,15 @@ const store = configureStore({
   },
 });
 
+store.subscribe(() => {
+  try {
+    localStorage.setItem(
+      "shoppyglobe-cart",
+      JSON.stringify({ items: store.getState().cart.items })
+    );
+  } catch {
+    // Ignore storage errors so cart actions still work.
+  }
+});
+
 export default store;

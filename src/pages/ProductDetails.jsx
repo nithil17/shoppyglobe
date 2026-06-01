@@ -6,6 +6,8 @@ import { addToCart, selectCartItems } from "../store/cartSlice";
 export default function ProductDetails(){
     const {id} = useParams()
     const [product, setProduct] = useState(null);
+    const [selectedQuantity, setSelectedQuantity] = useState(1);
+    const [added, setAdded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const dispatch = useDispatch();
@@ -44,7 +46,22 @@ export default function ProductDetails(){
     }
 
     const productInCart = cartItems.find((item)=> item.id===product.id);
-    const productQuantityLabel = productInCart ? `(${productInCart.quantity})` : "";
+    const cartQuantity = productInCart?.quantity || 0;
+    const stockLimit = product.stock || 99;
+    const remainingStock = Math.max(stockLimit - cartQuantity, 0);
+    const isAtStockLimit = remainingStock === 0;
+
+    function handleQuantityChange(event) {
+        const nextQuantity = Number(event.target.value);
+        setSelectedQuantity(Math.max(1, Math.min(nextQuantity, remainingStock || 1)));
+    }
+
+    function handleAddToCart() {
+        dispatch(addToCart({ product, quantity: selectedQuantity }));
+        setAdded(true);
+        setSelectedQuantity(1);
+        window.setTimeout(() => setAdded(false), 1200);
+    }
 
     return (
     <main className="page">
@@ -57,11 +74,30 @@ export default function ProductDetails(){
                     <h1 className="product-detail-name">{product.title}</h1>
                     <p className="product-detail-price">${product.price}</p>
                     <p className="product-detail-description">{product.description}</p>
+                    <p className="stock-text">
+                        {isAtStockLimit
+                            ? "You have added all available stock."
+                            : `${remainingStock} available to add`}
+                    </p>
+                    <div className="detail-cart-controls">
+                        <label className="form-label" htmlFor="product-quantity">Quantity</label>
+                        <input
+                            className="form-input quantity-input"
+                            id="product-quantity"
+                            type="number"
+                            min="1"
+                            max={remainingStock || 1}
+                            value={selectedQuantity}
+                            disabled={isAtStockLimit}
+                            onChange={handleQuantityChange}
+                        />
+                    </div>
                     <button
                         className="btn btn-primary"
-                        onClick={()=>dispatch(addToCart(product))}
+                        disabled={isAtStockLimit}
+                        onClick={handleAddToCart}
                     >
-                        Add to Cart {productQuantityLabel}
+                        {isAtStockLimit ? "Stock Limit Reached" : added ? "Added to Cart" : "Add to Cart"}
                     </button>
                 </div>
             </div>

@@ -36,12 +36,14 @@ export default function CartItem({ item }) {
           <button
             className="quantity-btn"
             type="button"
+            disabled={item.quantity >= item.stock}
             onClick={() => dispatch(increaseQuantity(item.id))}
             aria-label={`Increase ${item.title} quantity`}
           >
             +
           </button>
         </div>
+        <p className="stock-text">{item.stock - item.quantity} left</p>
         <p className="checkout-item-total">${itemTotal.toFixed(2)}</p>
         <button
           className="btn btn-secondary btn-small"
