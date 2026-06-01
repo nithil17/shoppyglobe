@@ -33,7 +33,3 @@ function useProducts(){
 }
 
 export default useProducts;
-
-export function getProductsById(id){
-return products.find((p)=>p.id===Number(id))
-}

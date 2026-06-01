@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductsById } from "../hooks/useProducts";
-import useProducts from "../hooks/useProducts";
-import { useCart } from "../context/cart-context";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, selectCartItems } from "../store/cartSlice";
 
 export default function ProductDetails(){
     const {id} = useParams()
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const {addToCart, cartItems} = useCart()
-   
-
-    // useEffect(()=>{
-    //     const foundProduct = getProductsById(id);
-    //     console.log(foundProduct);
-    // },[]);
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectCartItems);
 
     useEffect(()=>{
         async function fetchProduct(){
+            setLoading(true);
+            setError("");
+
             try {
                 const response = await fetch(`https://dummyjson.com/products/${id}`);
 
@@ -39,29 +36,35 @@ export default function ProductDetails(){
     },[id]);
 
     if (loading) {
-        return <h1>Loading...</h1>;
+        return <h1 className="status-message">Loading product...</h1>;
     }
-     const productInCart = cartItems.find((item)=> item.id===product.id);
-    const productQuantityLable = productInCart ? `(${productInCart.quantity})` : "";
 
-    if (error) {
-        return <h1>{error}</h1>;
+    if (error || !product) {
+        return <h1 className="status-message">{error || "Product not found"}</h1>;
     }
+
+    const productInCart = cartItems.find((item)=> item.id===product.id);
+    const productQuantityLabel = productInCart ? `(${productInCart.quantity})` : "";
 
     return (
-    <div className="page">
+    <main className="page">
         <div className="container">
             <div className="product-detail">
                 <div className="product-detail-image">
-                    <img src={product.images} alt={product.name} />
+                    <img src={product.thumbnail} alt={product.title} loading="lazy" />
                 </div>
-                <div className="product-detial-content">
-                    <h1 className="product-detail-name">{product.name}</h1>
-                    <p className="product-detail-price">{product.price}</p>
+                <div className="product-detail-content">
+                    <h1 className="product-detail-name">{product.title}</h1>
+                    <p className="product-detail-price">${product.price}</p>
                     <p className="product-detail-description">{product.description}</p>
-                    <button className="btn btn-primary" onClick={()=>addToCart(product.id)}>Add to Cart{productQuantityLable}</button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={()=>dispatch(addToCart(product))}
+                    >
+                        Add to Cart {productQuantityLabel}
+                    </button>
                 </div>
             </div>
         </div>
-        ProductDetails Page {product.title}</div>);
+    </main>);
 }

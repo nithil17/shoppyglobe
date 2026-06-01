@@ -39,14 +39,14 @@ export default function Auth(){
                     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
                         {error && <div className="error-message">{error}</div>}
                         <div className="form-group">
-                            <label className="form-lable">Email</label>
+                            <label className="form-label" htmlFor="email">Email</label>
                             <input className="form-input" type="email" id="email"
                             {...register("email", {required:"Email is required"})}/>
                             {errors.email && <span className="form-error">{errors.email.message}</span>}
 
                         </div>
                          <div className="form-group">
-                            <label className="form-lable">Password</label>
+                            <label className="form-label" htmlFor="password">Password</label>
                             <input className="form-input" type="password" id="password"
                             {...register("password", {required:"password is required",
                                 minLength:{
