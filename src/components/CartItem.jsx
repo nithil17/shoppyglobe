@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import {
   decreaseQuantity,
@@ -56,3 +57,14 @@ export default function CartItem({ item }) {
     </div>
   );
 }
+
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    quantity: PropTypes.number.isRequired,
+    stock: PropTypes.number.isRequired,
+  }).isRequired,
+};

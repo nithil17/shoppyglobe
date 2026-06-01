@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCartItems } from "../store/cartSlice";
 
@@ -48,3 +49,13 @@ export default function ProductItem({ product }) {
     </div>
   );
 }
+
+ProductItem.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    stock: PropTypes.number,
+  }).isRequired,
+};

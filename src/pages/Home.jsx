@@ -1,4 +1,6 @@
-import ProductList from "../components/ProductList";
+import { lazy, Suspense } from "react";
+
+const ProductList = lazy(() => import("../components/ProductList"));
 
 export default function Home() {
     return (
@@ -10,7 +12,9 @@ export default function Home() {
                 </p>
             </div>
 
-            <ProductList />
+            <Suspense fallback={<h1 className="status-message">Loading products...</h1>}>
+                <ProductList />
+            </Suspense>
         </div>
     );
 }
